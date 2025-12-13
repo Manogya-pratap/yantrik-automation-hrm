@@ -1,0 +1,177 @@
+/* src/theme.css */
+:root {
+  --wine-dark: #320814;
+  --wine-1: #4a0e23;
+  --wine-2: #7b1e3c;
+  --wine-3: #a83250;
+  --card-bg: #ffffff;
+  --accent: #9b2330;
+}
+
+/* GLOBAL BACKGROUND */
+body {
+  background: linear-gradient(
+    135deg,
+    var(--wine-dark) 0%,
+    var(--wine-1) 30%,
+    var(--wine-2) 60%,
+    var(--wine-3) 100%
+  );
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  background-attachment: fixed;
+  transition: background 0.4s ease-in-out;
+}
+
+/* TOP NAVBAR */
+.topbar {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 16px 24px;
+  border-radius: 10px;
+  margin: 16px auto;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.topbar .brand {
+  font-weight: 800;
+  font-size: 26px;
+  color: #fff;
+  letter-spacing: 1.5px;
+}
+
+/* Card container */
+.container-card {
+  max-width: 1200px;
+  margin: 30px auto;
+}
+
+/* WHITE CARD AREA */
+.card-surface {
+  background: var(--card-bg);
+  color: #111;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* SEARCH INPUT */
+.search-input {
+  width: 420px;
+  border-radius: 8px !important;
+}
+
+/* BUTTONS */
+.btn-wine {
+  background: var(--accent);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+.btn-wine:hover {
+  background: #6f1b2f;
+  transform: translateY(-2px);
+}
+
+/* TABLE HEADERS */
+.table thead {
+  background: #2d3a41;
+  color: #fff;
+  font-weight: 600;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  font-size: 15px;
+}
+
+/* EMPTY CELL */
+.empty-cell {
+  color: #777;
+  font-style: italic;
+}
+
+/* LOGIN WRAPPER */
+.login-wrap {
+  height: calc(100vh - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* NICE FADE ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .container-card {
+    padding: 8px;
+  }
+  .topbar {
+    padding: 12px 16px;
+  }
+}
+
+/* Employee List Container */
+.employee-list-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Clean table style */
+.employee-table thead {
+  background: #4a0e23;
+  color: white;
+  font-size: 15px;
+}
+
+.employee-table tbody td {
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+/* Search input size */
+.search-input {
+  width: 300px;
+  max-width: 100%;
+}
+
+/* Button Styling */
+.btn-wine {
+  background: #7b1e3c;
+  border: none;
+  padding: 5px 14px;
+  font-weight: 600;
+}
+
+.btn-wine:hover {
+  background: #5c152b;
+}
