@@ -188,4 +188,13 @@ app.get("/api/data", authMiddleware, async (req, res) => {
   }
 });
 
-app.listen(4000, () => console.log("Backend running on port 4000"));
+// Test route for Render health checks
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully!");
+});
+
+// Use Render port or fallback to 4000 locally
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+
+//app.listen(4000, () => console.log("Backend running on port 4000"));

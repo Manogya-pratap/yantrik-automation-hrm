@@ -1,9 +1,9 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginCard from "./components/LoginCard";
 import Dashboard from "./pages/Dashboard";
 import "./theme.css";
 
-const API = process.env.REACT_APP_API || "http://localhost:4000";
+const API = process.env.REACT_APP_API;
 
 function App() {
   // Normalize stored token (guard against "undefined"/"null")
