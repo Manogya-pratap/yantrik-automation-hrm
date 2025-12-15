@@ -9,9 +9,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Load Google Service Account Credentials
-// const credentials = require("./service-account.json");
-
 const credentials = {
   type: "service_account",
   project_id: process.env.GOOGLE_PROJECT_ID,
@@ -38,10 +35,26 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
 // Users
 const USERS = {
-  HR: { password: "hr123", role: "HR" },
-  MD: { password: "md123", role: "MD" },
-  ADMIN1: { password: "admin1123", role: "ADMIN" },
-  ADMIN2: { password: "admin2123", role: "ADMIN" },
+  HR: {
+    password: "hr123",
+    role: "Human Resource",
+    name: "Sir Tarun Kumar",
+  },
+  MD: {
+    password: "md123",
+    role: "Managing Director",
+    name: "Sir Pankaj Kumar ",
+  },
+  ADMIN1: {
+    password: "admin1123",
+    role: "ADMIN",
+    name: "System Administrator",
+  },
+  ADMIN2: {
+    password: "admin2123",
+    role: "ADMIN",
+    name: "Admin Operator",
+  },
 };
 
 // LOGIN API
@@ -56,7 +69,12 @@ app.post("/api/login", (req, res) => {
     expiresIn: "6h",
   });
 
-  res.json({ token, role: USERS[username].role });
+  res.json({
+    token,
+    username,
+    name: USERS[username].name,
+    role: USERS[username].role,
+  });
 });
 
 // Middleware for JWT auth

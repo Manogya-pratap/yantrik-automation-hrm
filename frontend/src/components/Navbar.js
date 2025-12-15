@@ -1,8 +1,16 @@
-// src/components/Navbar.js
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 
-function TopNavbar({ onPageChange, onResetDetails, onLogout, currentPage }) {
+function TopNavbar({
+  onPageChange,
+  onResetDetails,
+  onLogout,
+  currentPage,
+  name,
+  role,
+}) {
+  const displayName = name || "User";
+
   return (
     <Navbar
       expand="lg"
@@ -10,13 +18,13 @@ function TopNavbar({ onPageChange, onResetDetails, onLogout, currentPage }) {
         background: "linear-gradient(90deg, #4a0e23, #7b1e3c, #a83250)",
         padding: "12px 20px",
       }}
-      className="mb-4"
+      variant="dark"
     >
       <Container fluid>
-        {/* LEFT SIDE BRAND */}
+        {/* ===== BRAND ===== */}
         <Navbar.Brand
           style={{
-            fontSize: "26px",
+            fontSize: "24px",
             fontWeight: "700",
             color: "white",
             cursor: "pointer",
@@ -24,75 +32,79 @@ function TopNavbar({ onPageChange, onResetDetails, onLogout, currentPage }) {
           onClick={() => {
             onResetDetails();
             onPageChange("home");
-            window.history.pushState({}, "home");
           }}
         >
           YANTRIK Automation
         </Navbar.Brand>
 
+        {/* ===== TOGGLE FOR MOBILE ===== */}
         <Navbar.Toggle aria-controls="main-navbar" />
 
         <Navbar.Collapse id="main-navbar">
-          {/* LEFT-SIDE NAVIGATION */}
+          {/* ===== LEFT NAV LINKS ===== */}
           <Nav className="me-auto">
             {/* HOME */}
             <Nav.Link
-              style={{ color: "white", fontSize: "16px" }}
+              active={currentPage === "home"}
+              style={{ color: "white" }}
               onClick={() => {
                 onResetDetails();
                 onPageChange("home");
-                window.history.pushState({}, "home");
               }}
             >
               Home
             </Nav.Link>
 
-            {/* EMPLOYEE DETAILS (TOGGLE) */}
+            {/* EMPLOYEE DETAILS (TOGGLE STYLE) */}
             <Nav.Link
-              style={{ color: "white", fontSize: "16px" }}
+              active={currentPage === "employees"}
+              style={{ color: "white" }}
               onClick={() => {
                 onResetDetails();
-                if (currentPage === "employees") {
-                  // second click → close page → go home
-                  onPageChange("home");
-                  window.history.pushState({}, "home");
-                } else {
-                  // first click → open employees page
-                  onPageChange("employees");
-                  window.history.pushState({}, "employees");
-                }
+                onPageChange(
+                  currentPage === "employees" ? "home" : "employees"
+                );
               }}
             >
               Employee Details
             </Nav.Link>
 
+            {/* ATTENDANCE */}
             <Nav.Link
-              style={{ color: "white", fontSize: "16px" }}
+              active={currentPage === "attendance"}
+              style={{ color: "white" }}
               onClick={() => {
                 onResetDetails();
-                if (currentPage === "attendence") {
-                  // second click → close page → go home
-                  onPageChange("home");
-                  window.history.pushState({}, "home");
-                } else {
-                  // first click → open employees page
-                  onPageChange("attendence");
-                  window.history.pushState({}, "attendence");
-                }
+                onPageChange(
+                  currentPage === "attendance" ? "home" : "attendance"
+                );
               }}
             >
-              Attandence
+              Attendance
             </Nav.Link>
           </Nav>
 
-          {/* LOGOUT BUTTON ON RIGHT */}
+          {/* ===== USER INFO ===== */}
+          <div
+            style={{
+              color: "white",
+              marginRight: "15px",
+              fontSize: "14px",
+              textAlign: "right",
+              lineHeight: "1.2",
+            }}
+          >
+            Welcome, <b>{displayName}</b>
+            <div style={{ fontSize: "12px", opacity: 0.9 }}>({role})</div>
+          </div>
+
+          {/* ===== LOGOUT ===== */}
           <Button
-            variant="danger"
             onClick={onLogout}
             style={{
               backgroundColor: "#7b1e3c",
               border: "none",
-              fontWeight: "bold",
+              fontWeight: "600",
             }}
           >
             Logout

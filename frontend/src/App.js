@@ -5,48 +5,33 @@ import "./theme.css";
 
 const API = process.env.REACT_APP_API;
 
-function App() {
-  // Normalize stored token (guard against "undefined"/"null")
-  const storedToken = localStorage.getItem("token");
-  const [token, setToken] = useState(
-    storedToken && storedToken !== "undefined" && storedToken !== "null"
-      ? storedToken
-      : null
-  );
+/* ===== SAFE LOCALSTORAGE GETTER ===== */
+const safeGet = (key) => {
+  const value = localStorage.getItem(key);
+  if (!value || value === "undefined" || value === "null") return null;
+  return value;
+};
 
+function App() {
+  /* ===== AUTH STATE ===== */
+  const [token, setToken] = useState(() => {
+    const t = safeGet("token");
+    return t ? t : null;
+  });
+
+  const [user, setUser] = useState(() => ({
+    //username: safeGet("username"),
+    role: safeGet("role"),
+    name: safeGet("name"),
+  }));
+
+  /* ===== DATA STATE ===== */
   const [employees, setEmployees] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Map raw sheet headers/data to objects that always include Name & Designation
-  const normalizeData = (headersArr = [], dataArr = []) => {
-    if (!headersArr || headersArr.length === 0) return [];
-
-    // pick best keys (case-insensitive)
-    const nameKey =
-      headersArr.find((h) => /employee\s*name|full\s*name|name/i.test(h)) ||
-      headersArr.find((h) => /name/i.test(h)) ||
-      null;
-
-    const designationKey =
-      headersArr.find((h) =>
-        /(designation|role|job\s*title|title|position|post)/i.test(h)
-      ) || null;
-
-    return dataArr.map((row) => {
-      // row is already an object keyed by header names
-      const obj = { ...row };
-
-      // set standard fields for UI to use
-      obj["Name"] = obj["Name"] || (nameKey ? obj[nameKey] : "") || "";
-      obj["Designation"] =
-        obj["Designation"] || (designationKey ? obj[designationKey] : "") || "";
-
-      return obj;
-    });
-  };
-
+  /* ===== FETCH DATA ===== */
   const fetchData = async () => {
     if (!token) return;
     try {
@@ -55,10 +40,8 @@ function App() {
       });
 
       const json = await res.json();
-
       if (json.error === "Invalid token") {
-        localStorage.removeItem("token");
-        setToken(null);
+        logoutUser();
         return;
       }
 
@@ -71,9 +54,10 @@ function App() {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [token]);
 
+  /* ===== LOGIN ===== */
   const loginUser = async (creds) => {
     setMsg("");
     try {
@@ -82,38 +66,62 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(creds),
       });
+
       const json = await res.json();
+      //const json = await res.json();
+      console.log("LOGIN RESPONSE:", json);
+
       if (json.token) {
         localStorage.setItem("token", json.token);
+        //localStorage.setItem("username", json.username);
+        if (json.role) {
+          localStorage.setItem("role", json.role);
+        }
+
+        if (json.name) {
+          localStorage.setItem("name", json.name);
+        } else {
+          localStorage.removeItem("name");
+        }
+
         setToken(json.token);
+        setUser({
+          //username: json.username,
+          role: json.role,
+          name: json.name,
+        });
       } else {
         setMsg(json.error || "Invalid credentials");
       }
-    } catch (err) {
-      console.error("login error:", err);
+    } catch {
       setMsg("Login failed (server error)");
     }
   };
 
+  /* ===== LOGOUT ===== */
   const logoutUser = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     setToken(null);
+    setUser({ username: null, role: null, name: null });
     setEmployees([]);
     setHeaders([]);
   };
 
-  // If not logged in -> show login card by default
+  /* ===== NOT LOGGED IN ===== */
   if (!token) {
     return <LoginCard onLogin={loginUser} msg={msg} />;
   }
 
-  // Logged-in -> show Dashboard, pass logout handler
+  /* ===== LOGGED IN ===== */
   return (
     <Dashboard
       employees={employees}
       headers={headers}
-      onLogout={logoutUser}
       loading={loading}
+      onLogout={logoutUser}
+      //username={user.username}
+      role={user.role}
+      name={user.name}
     />
   );
 }

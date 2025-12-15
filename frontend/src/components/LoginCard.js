@@ -7,7 +7,6 @@ function LoginCard({ onLogin, msg }) {
     password: "",
   });
 
-  // Focus username on load
   useEffect(() => {
     const input = document.getElementById("username-input");
     if (input) input.focus();
@@ -20,28 +19,80 @@ function LoginCard({ onLogin, msg }) {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex flex-column justify-content-center align-items-center"
       style={{
-        height: "100vh",
+        minHeight: "100vh",
         background: "linear-gradient(135deg, #3b0a18, #7b1e3c, #a83250)",
+        padding: "20px",
       }}
     >
-      <Card
+      {/* ===== COMPANY HEADING (OUTSIDE CARD) ===== */}
+      <div
+        className="text-center"
         style={{
-          width: "360px",
-          padding: "25px",
-          borderRadius: "12px",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
+          marginBottom: "65px",
+          marginTop: "-90px", // move slightly upward
         }}
       >
-        <h3 className="text-center mb-3" style={{ fontWeight: "bold" }}>
-          YANTRIK LOGIN
-        </h3>
+        <h1
+          style={{
+            fontWeight: "900",
+            fontSize: "60px", // BIGGER TEXT
+            letterSpacing: "1.6px",
+            marginBottom: "20px",
+            textTransform: "uppercase",
+
+            /* STRONGER GRADIENT */
+            background:
+              "linear-gradient(135deg, #ffffff 0%, #ffd6dd 30%, #ff9fb3 60%, #ffffff 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+
+            /* SUBTLE GLOW */
+            //   textShadow:
+            //   "0 0 12px rgba(255, 180, 200, 0.35), 0 0 24px rgba(255, 120, 150, 0.25)",
+          }}
+        >
+          YANTRIK Automation Pvt. Ltd.
+        </h1>
+
+        <div
+          style={{
+            fontSize: "15px",
+            fontWeight: "500",
+            color: "rgba(255,255,255,0.9)",
+            letterSpacing: "0.8px",
+            textTransform: "uppercase",
+          }}
+        >
+          Industrial Automation • Smart Engineering Solutions
+        </div>
+      </div>
+
+      {/* ===== LOGIN CARD ===== */}
+      <Card
+        style={{
+          width: "380px",
+          padding: "28px",
+          borderRadius: "14px",
+          boxShadow: "0 10px 26px rgba(0,0,0,0.35)",
+          background: "#ffffff",
+        }}
+      >
+        <h4
+          className="text-center mb-3"
+          style={{
+            fontWeight: "700",
+            color: "#3b0a18",
+            letterSpacing: "0.5px",
+          }}
+        >
+          Secure Login
+        </h4>
 
         {msg && <p className="text-danger text-center">{msg}</p>}
 
         <Form onSubmit={handleSubmit}>
-          {/* Username */}
           <Form.Group className="mb-3">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -55,7 +106,6 @@ function LoginCard({ onLogin, msg }) {
             />
           </Form.Group>
 
-          {/* Password */}
           <Form.Group className="mb-4">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -68,23 +118,29 @@ function LoginCard({ onLogin, msg }) {
             />
           </Form.Group>
 
-          {/* Login Button */}
           <Button
             type="submit"
             className="w-100"
             style={{
               backgroundColor: "#7b1e3c",
               border: "none",
-              fontWeight: "bold",
+              fontWeight: "600",
+              letterSpacing: "0.5px",
             }}
           >
             Login
           </Button>
         </Form>
 
-        {/* Demo Accounts */}
-        <div style={{ fontSize: "12px", marginTop: "12px" }}>
-          <b>Default Users:</b> HR / MD / ADMIN1 / ADMIN2
+        <div
+          style={{
+            fontSize: "12px",
+            marginTop: "14px",
+            color: "#555",
+            textAlign: "center",
+          }}
+        >
+          <b>Demo Users:</b> HR / MD / ADMIN1 / ADMIN2
         </div>
       </Card>
     </div>
